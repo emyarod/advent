@@ -32,6 +32,31 @@ const getChecksum = boxIds => {
   });
   return totalTwos * totalThrees;
 };
+const getCorrectBoxIdCommonLetters = boxIds => {
+  let index = 0;
+  for (let i = 0; i < boxIds.length - 1; i++) {
+    for (let j = i + 1; j < boxIds.length; j++) {
+      const [currentId, nextId] = [boxIds[i], boxIds[j]];
+      let inaccuracies = 0;
+      let commonLetters = '';
+      for (let k = 0; k < currentId.length; k++) {
+        if (currentId[k] !== nextId[k]) {
+          inaccuracies++;
+          index = k;
+        } else {
+          commonLetters += currentId[k];
+        }
+        if (inaccuracies > 1) {
+          commonLetters = '';
+          break;
+        }
+      }
+      if (inaccuracies === 1) {
+        return commonLetters;
+      }
+    }
+  }
+};
 
 (async () => {
   const boxIds = await getBoxIds();
@@ -47,4 +72,16 @@ const getChecksum = boxIds => {
       'ababab',
     ])
   ); // 12
+  console.log(getCorrectBoxIdCommonLetters(boxIds)); // megsdlpulxvinkatfoyzxcbvq
+  console.log(
+    getCorrectBoxIdCommonLetters([
+      'abcde',
+      'fghij',
+      'klmno',
+      'pqrst',
+      'fguij',
+      'axcye',
+      'wvxyz',
+    ])
+  ); // fgij
 })();
