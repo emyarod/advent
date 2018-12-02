@@ -1,0 +1,5 @@
+{
+  "code-runner.executorMap": {
+    "javascript": "$workspaceRoot/node_modules/.bin/babel-node --harmony $fullFileName"
+  }
+}
