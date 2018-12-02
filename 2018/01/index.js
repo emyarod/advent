@@ -40,7 +40,7 @@ const getRepeatFrequency = changes => {
 (async () => {
   const changes = await getFrequencyChanges();
   console.log(resultingFrequency(changes)); // 411
-  console.log(getRepeatFrequency(changes));
+  console.log(getRepeatFrequency(changes)); // 56360
   console.log(getRepeatFrequency([1, -2, 3, 1])); // 2
   console.log(getRepeatFrequency([1, -1])); // 0
   console.log(getRepeatFrequency([3, 3, 4, -2, -4])); // 10
