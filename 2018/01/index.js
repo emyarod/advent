@@ -10,18 +10,44 @@ const getFrequencyChanges = async () => {
       path.resolve(__dirname, 'input.txt'),
       'utf8'
     );
-    return data.split('\n').map(Number);
+    return data
+      .trim()
+      .split('\n')
+      .map(Number);
   } catch (err) {
     console.log('ERROR:', err);
     return null;
   }
 };
 
-const resultingFrequency = async () => {
-  const changes = await getFrequencyChanges();
-  return changes ? changes.reduce((acc, curr) => acc + curr, 0) : null;
+const resultingFrequency = changes =>
+  changes ? changes.reduce((acc, curr) => acc + curr, 0) : null;
+
+const getRepeatFrequency = changes => {
+  if (!changes) {
+    return;
+  }
+  let frequency = 0;
+  const frequencies = new Set([frequency]);
+  while (true) {
+    for (let i = 0; i < changes.length; i++) {
+      frequency += changes[i];
+      if (frequencies.has(frequency)) {
+        return frequency;
+      }
+      frequencies.add(frequency);
+    }
+  }
 };
 
 (async () => {
-  console.log(await resultingFrequency()); // 411
+  const changes = await getFrequencyChanges();
+  console.log(resultingFrequency(changes)); // 411
+  console.log(getRepeatFrequency(changes));
+  console.log(getRepeatFrequency([1, -2, 3, 1])); // 2
+  console.log(getRepeatFrequency([1, -1])); // 0
+  console.log(getRepeatFrequency([3, 3, 4, -2, -4])); // 10
+  console.log(getRepeatFrequency([-6, 3, 8, 5, -6])); // 5
+  console.log(getRepeatFrequency([7, 7, -2, -7, -4])); // 14
+  console.log(getRepeatFrequency([1, 1, 10, -9])); // 12
 })();
