@@ -3,7 +3,6 @@ import path from 'path';
 import { promisify } from 'util';
 
 const readFilePromise = promisify(readFile);
-
 const getFrequencyChanges = async () => {
   try {
     const data = await readFilePromise(
@@ -19,10 +18,8 @@ const getFrequencyChanges = async () => {
     return null;
   }
 };
-
 const resultingFrequency = changes =>
   changes ? changes.reduce((acc, curr) => acc + curr, 0) : null;
-
 const getRepeatFrequency = changes => {
   if (!changes) {
     return;
