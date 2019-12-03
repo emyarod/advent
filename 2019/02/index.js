@@ -51,4 +51,15 @@ console.log(runIntcode([2, 4, 4, 5, 99, 0])); // 2,4,4,5,99,9801
   input[1] = 12;
   input[2] = 2;
   console.log(runIntcode(input)[0]);
+  for (let noun = 0; noun <= 99; noun++) {
+    for (let verb = 0; verb <= 99; verb++) {
+      const inputPt2 = await getInput();
+      inputPt2[1] = noun;
+      inputPt2[2] = verb;
+      if (runIntcode(inputPt2)[0] === 19690720) {
+        console.log(100 * noun + verb);
+        return;
+      }
+    }
+  }
 })();
