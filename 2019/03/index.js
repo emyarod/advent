@@ -19,7 +19,7 @@ const getInput = async () => {
   }
 };
 const addWirePositions = ({ direction, magnitude, wirePositions, x, y }) => {
-  for (let i = 0; i <= magnitude; i++) {
+  for (let i = 1; i <= magnitude; i++) {
     if (direction === 'U') {
       wirePositions.set(`${x},${y + i}`, true);
     } else if (direction === 'R') {
