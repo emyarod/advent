@@ -79,6 +79,67 @@ const findClosestIntersection = ({ wire1, wire2 }) => {
     )
   );
 };
+
+const countStepsToIntersection = ({ wire, intersection }) => {
+  let steps = 0;
+  let x = 0;
+  let y = 0;
+  for (let i = 0; i < wire.length; i++) {
+    const [direction] = wire[i];
+    const magnitude = Number(wire[i].slice(1));
+    if (direction === 'U') {
+      for (let j = 1; j <= magnitude; j++) {
+        y++;
+        steps++;
+        if (`${x},${y}` === intersection) {
+          return steps;
+        }
+      }
+    } else if (direction === 'R') {
+      for (let j = 1; j <= magnitude; j++) {
+        x++;
+        steps++;
+        if (`${x},${y}` === intersection) {
+          return steps;
+        }
+      }
+    } else if (direction === 'D') {
+      for (let j = 1; j <= magnitude; j++) {
+        y--;
+        steps++;
+        if (`${x},${y}` === intersection) {
+          return steps;
+        }
+      }
+    } else if (direction === 'L') {
+      for (let j = 1; j <= magnitude; j++) {
+        x--;
+        steps++;
+        if (`${x},${y}` === intersection) {
+          return steps;
+        }
+      }
+    }
+  }
+  return steps;
+};
+const findMinStepsToIntersection = ({ wire1, wire2 }) => {
+  const wire1Positions = getWirePositions(wire1);
+  const wire2Positions = getWirePositions(wire2);
+  const intersections = findIntersections({
+    map1: wire1Positions,
+    map2: wire2Positions,
+  });
+  let minSteps = Number.MAX_SAFE_INTEGER;
+  intersections.forEach(intersection => {
+    minSteps = Math.min(
+      minSteps,
+      countStepsToIntersection({ wire: wire1, intersection }) +
+        countStepsToIntersection({ wire: wire2, intersection })
+    );
+  });
+  return minSteps;
+};
 console.log(
   findClosestIntersection({
     wire1: 'R75,D30,R83,U83,L12,D49,R71,U7,L72'.split(','),
@@ -91,8 +152,22 @@ console.log(
     wire2: 'U98,R91,D20,R16,D67,R40,U7,R15,U6,R7'.split(','),
   })
 ); // 135
+
+console.log(
+  findMinStepsToIntersection({
+    wire1: 'R75,D30,R83,U83,L12,D49,R71,U7,L72'.split(','),
+    wire2: 'U62,R66,U55,R34,D71,R55,D58,R83'.split(','),
+  })
+); // 610
+console.log(
+  findMinStepsToIntersection({
+    wire1: 'R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51'.split(','),
+    wire2: 'U98,R91,D20,R16,D67,R40,U7,R15,U6,R7'.split(','),
+  })
+); // 410
 (async () => {
   const input = await getInput();
   const [wire1, wire2] = input;
-  console.log(findClosestIntersection({ wire1, wire2 }));
+  console.log(findClosestIntersection({ wire1, wire2 })); // 768
+  console.log(findMinStepsToIntersection({ wire1, wire2 })); // 8684
 })();
